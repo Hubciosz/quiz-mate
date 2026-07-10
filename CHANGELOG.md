@@ -1,5 +1,9 @@
 # Change Log
 
+## [1.1.6](https://github.com/david-04/quiz-mate/releases/tag/v1.1.6) (2026-07-10)
+
+- Upgraded dependencies
+
 ## [1.1.5](https://github.com/david-04/quiz-mate/releases/tag/v1.1.5) (2025-07-01)
 
 - Fixed an issue that caused the QR code to resolve to `undefined` (thanks [@Stogas](https://github.com/Stogas))
