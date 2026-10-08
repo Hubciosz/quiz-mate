@@ -46,7 +46,7 @@ function getAssetsPath() {
         }
     }
     if (!utils.isDevMode()) {
-        return fail("INTERNAL ERROR: Unable to locate the directory with the static frontend assets");
+        return utils.fail("INTERNAL ERROR: Unable to locate the directory with the static frontend assets");
     }
     return releasePath;
 }
@@ -60,7 +60,7 @@ function loadAndPatchIndexHtml(assetsPath, config) {
     if (fs.existsSync(indexFile)) {
         return fs.readFileSync(indexFile).toString().replace(/"\.\//g, `"${config.staticAssetSource}/`);
     } else {
-        return fail(["ERROR: Unable to load index.html.", "Please run 'yarn build' in 'frontend' first."]);
+        return utils.fail(["ERROR: Unable to load index.html.", "Please run 'npm run build' in 'frontend' first."]);
     }
 }
 
