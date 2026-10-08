@@ -1,5 +1,13 @@
-export const server = (process.env.NODE_ENV === "development" ? "http://localhost:3001" : window.location.origin);
-export const client = (process.env.NODE_ENV === "development" ? "http://localhost:3000" : window.location.origin);
+function getPublicUrl(defaultUrl) {
+    const configuredUrl = globalThis.QUIZ_MATE_PUBLIC_URL;
+    if (configuredUrl && "string" === typeof configuredUrl && configuredUrl.trim()) {
+        return configuredUrl.replace(/\/+$/, "");
+    }
+    return defaultUrl;
+}
+
+export const server = (process.env.NODE_ENV === "development" ? "http://localhost:3001" : getPublicUrl(window.location.origin));
+export const client = getPublicUrl(process.env.NODE_ENV === "development" ? "http://localhost:3000" : window.location.origin);
 
 export const createNewRoom = "CREATE_NEW_ROOM";
 export const roomCreated = "ROOM_CREATED";

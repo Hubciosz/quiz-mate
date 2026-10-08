@@ -13,6 +13,7 @@ const PROPERTY_HANDLERS = {
     "https-port": (config, value, fail) => config.httpsPort = parsePort(value, fail),
     "https-key-file": (config, value, fail) => config.httpsKeyFile = parseFile(value, fail),
     "https-cert-file": (config, value, fail) => config.httpsCertFile = parseFile(value, fail),
+    "public-url": (config, value, fail) => config.publicUrl = parsePublicUrl(value, fail),
     "static-assets-source": (config, value, fail) => config.staticAssetSource = parseStaticAssetsSource(value, fail),
 };
 
@@ -135,12 +136,21 @@ function parseFile(value, fail) {
 // Parse the static assets source
 //----------------------------------------------------------------------------------------------------------------------
 
+function parsePublicUrl(value, fail) {
+    if ("" === value) {
+        return undefined;
+    } else if (!value.match(/^https?:\/\/.*$/)) {
+        fail("The public URL must be an http(s):// URL");
+    }
+    return value.replace(/\/+$/, "");
+}
+
 function parseStaticAssetsSource(value, fail) {
     if ("" === value || "local" === value.toLowerCase()) {
         return ".";
     } else if ("github" === value.toLowerCase()) {
         return GITHUB_PAGES_ASSETS_URL.replace(/\/+$/, "");
-    } else if (value.match(/^https?:\/\/.*/)) {
+    } else if (value.match(/^https?:\/\/.*$/)) {
         return value.replace(/\/+$/, "");
     } else {
         return fail("The static asset source must be set to 'local', 'github', or an http(s):// URL");

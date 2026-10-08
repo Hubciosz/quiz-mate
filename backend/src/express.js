@@ -58,7 +58,12 @@ function getAssetsPath() {
 function loadAndPatchIndexHtml(assetsPath, config) {
     const indexFile = path.join(assetsPath, "index.html");
     if (fs.existsSync(indexFile)) {
-        return fs.readFileSync(indexFile).toString().replace(/"\.\//g, `"${config.staticAssetSource}/`);
+        const html = fs.readFileSync(indexFile).toString();
+        const patchedAssets = html.replace(/"\.\//g, `"${config.staticAssetSource}/`);
+        if (!config.publicUrl) {
+            return patchedAssets;
+        }
+        return patchedAssets.replace(/<\/head>/i, `<script>globalThis.QUIZ_MATE_PUBLIC_URL=${JSON.stringify(config.publicUrl)};</script></head>`);
     } else {
         return utils.fail(["ERROR: Unable to load index.html.", "Please run 'npm run build' in 'frontend' first."]);
     }
